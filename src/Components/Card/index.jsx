@@ -14,7 +14,6 @@ const Card = (data) => {
     context.setCountCart(context.countCart + 1);
     context.setCartProducts([...context.cartProducts, productData]);
     context.openCheckoutSideMenu();
-
   };
 
   const renderIcon = (id) => {
@@ -23,21 +22,19 @@ const Card = (data) => {
 
     if (isInCart) {
       return (
-        <div
-          className="absolute bg-black top-0 right-0 w-6 h-6 rounded-full flex items-center justify-center m-2 p-1 "
-        >
+        <div className="absolute bg-black top-0 right-0 w-6 h-6 rounded-full flex items-center justify-center m-2 p-1 ">
           <CheckIcon className="h-6 w-6 text-white"></CheckIcon>
         </div>
-      )
+      );
     } else {
-        return (
-            <div
-              className="absolute bg-white top-0 right-0 w-6 h-6 rounded-full flex items-center justify-center m-2 p-1 "
-              onClick={(event) => addProductsToCart(event, data.data)}
-            >
-              <PlusIcon className="h-6 w-6 text-black"></PlusIcon>
-            </div>
-          )
+      return (
+        <div
+          className="absolute top-0 right-0 w-6 h-6 rounded-full flex items-center justify-center m-2 p-1  bg-gray-50 "
+          onClick={(event) => addProductsToCart(event, data.data)}
+        >
+          <PlusIcon className="h-6 w-6 text-black"></PlusIcon>
+        </div>
+      );
     }
   };
 

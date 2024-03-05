@@ -9,7 +9,7 @@ const ProductDetail = () => {
     <aside
       className={`${
         context.isProductDetailOpen ? "flex" : "hidden"
-      }  flex-col fixed right-0 border bg-white border-black rounded-lg w-[320px] h-[calc(100vh-68px)]`}
+      }  flex-col fixed right-0 border bg-white border-black rounded-lg w-[360px] h-[calc(100vh-68px) top-[68px]`}
     >
       <div className="flex justify-between items-center p-6 w-full">
         <h2 className=" font-medium text-xl">Detail</h2>
@@ -20,18 +20,24 @@ const ProductDetail = () => {
           ></XCircleIcon>
         </div>
       </div>
-        <figure className='px-6'>
-          <img
-            className="w-full h-full rounded-lg p-6 "
-            src={context.productToShow.image}
-            alt={context.productToShow.title}
-          />
-        </figure>
-        <p className='flex flex-col p-6 w-full'>
-          <span className='text-2xl font-medium mb-2'>${context.productToShow.price}</span>
-          <span className='text-sm font-medium mb-2'>{context.productToShow.title}</span>
-          <span className='text-sm font-light'>{context.productToShow.description}</span>
-        </p>
+      <figure className="px-6">
+        <img
+          className="w-full h-full rounded-lg p-6 "
+          src={context.productToShow.image}
+          alt={context.productToShow.title}
+        />
+      </figure>
+      <p className="flex flex-col p-6 w-full">
+        <span className="text-2xl font-medium mb-2">
+          ${context.productToShow.price}
+        </span>
+        <span className="text-sm font-medium mb-2">
+          {context.productToShow.title}
+        </span>
+        <span className="text-sm font-light">
+          {context.productToShow.description}
+        </span>
+      </p>
     </aside>
   );
 };
