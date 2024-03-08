@@ -1,5 +1,10 @@
-import { useRoutes, BrowserRouter } from "react-router-dom";
-import { ShoppingCartProvider } from "../../Context";
+import { useContext } from "react";
+import { useRoutes, BrowserRouter, Navigate } from "react-router-dom";
+import {
+  ShoppingCartContext,
+  ShoppingCartProvider,
+  initLocalStorage,
+} from "../../Context";
 import "../Home";
 import Home from "../Home";
 import MyAccount from "../MyAccount";
@@ -12,9 +17,44 @@ import { CheckoutSideMenu } from "../../Components/CheckoutSideMenu";
 import "./App.css";
 
 const AppRoutes = () => {
+  const context = useContext(ShoppingCartContext);
+
+  // Account
+  const account = localStorage.getItem("account");
+  const parsedAccount = JSON.parse(account);
+
+  // Sign Out
+  const signOut = localStorage.getItem("sign-out");
+  const parsedSignOut = JSON.parse(signOut);
+
+  // Has account
+  const noAccountInLocalStorage = parsedAccount
+    ? Object.keys(parsedAccount).length === 0
+    : true;
+  const noAccountInLocalState = context.account
+    ? Object.keys(context.account).length === 0
+    : true;
+  const hasUserAnAccount = !noAccountInLocalStorage || !noAccountInLocalState;
+  const isUserSignOut = context.signOut || parsedSignOut;
   let routes = useRoutes([
-    { path: "/", element: <Home /> },
-    { path: "/:category", element: <Home /> },
+    {
+      path: "/",
+      element:
+        hasUserAnAccount && !isUserSignOut ? (
+          <Home />
+        ) : (
+          <Navigate replace to={"/sign-in"} />
+        ),
+    },
+    {
+      path: "/:category",
+      element:
+        hasUserAnAccount && !isUserSignOut ? (
+          <Home />
+        ) : (
+          <Navigate replace to={"/sign-in"} />
+        ),
+    },
     { path: "/my-orders", element: <MyOrders /> },
     { path: "/my-orders/last", element: <MyOrder /> },
     { path: "/my-orders/:id", element: <MyOrder /> },
@@ -27,6 +67,8 @@ const AppRoutes = () => {
 };
 
 const App = () => {
+  initLocalStorage();
+
   return (
     <ShoppingCartProvider>
       <BrowserRouter>

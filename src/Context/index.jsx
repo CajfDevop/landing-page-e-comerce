@@ -3,6 +3,27 @@ import PropTypes from "prop-types";
 
 export const ShoppingCartContext = createContext();
 
+export const initLocalStorage = () => {
+  const signOutLocalStorage = localStorage.getItem("sign-out");
+  const accountLocalStorage = localStorage.getItem("account");
+  let parseSignOut;
+  let parseAccount;
+
+  if (!signOutLocalStorage) {
+    localStorage.setItem("sign-out", JSON.stringify(false));
+    parseSignOut = false;
+  } else {
+    parseSignOut = JSON.parse(signOutLocalStorage);
+  }
+
+  if (!accountLocalStorage) {
+    localStorage.setItem("account", JSON.stringify({}));
+    parseAccount = {};
+  } else {
+    parseAccount = JSON.parse(accountLocalStorage);
+  }
+};
+
 export const ShoppingCartProvider = ({ children }) => {
   // Shopping Cart Increment quantity
   const [countCart, setCountCart] = useState(0);
@@ -37,6 +58,12 @@ export const ShoppingCartProvider = ({ children }) => {
 
   //Get a product by Category
   const [searchByCategory, setSearchByCategory] = useState(null);
+
+  //Sign out
+  const [signOut, setSignOut] = useState(false);
+
+  //My Account
+  const [account, setAccount] = useState({});
 
   useEffect(() => {
     setIsLoading(true); //start charging
@@ -107,8 +134,6 @@ export const ShoppingCartProvider = ({ children }) => {
     }
   }, [items, searchByCategory, searchByTitle]);
 
-  console.log("searchByTitle", searchByTitle);
-
   const value = useMemo(
     () => ({
       countCart,
@@ -134,6 +159,10 @@ export const ShoppingCartProvider = ({ children }) => {
       searchByCategory,
       setSearchByCategory,
       isLoading,
+      signOut,
+      setSignOut,
+      account,
+      setAccount,
     }),
     [
       countCart,
@@ -146,6 +175,9 @@ export const ShoppingCartProvider = ({ children }) => {
       searchByTitle,
       filteredItems,
       searchByCategory,
+      isLoading,
+      signOut,
+      account,
     ]
   );
 
